@@ -14,7 +14,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 
 $app['twig'] = $app->share(
     $app->extend('twig', function($twig, $app) {
-        $twig->addGlobal('assets', 'assets');
+        $twig->addGlobal('assets', '/freelance/assets');
         return $twig;
     }));
 
@@ -24,6 +24,10 @@ $twig = $app['twig'];
 // CONTROLLERS
 $app->get('/', function () use ($twig) {
     return $twig->render('web/index.html.twig', array());
+});
+
+$app->get('/software', function () use ($twig) {
+    return $twig->render('web/software.html.twig', array());
 });
 
 $app->run();

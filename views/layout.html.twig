@@ -17,10 +17,11 @@
 
         <!-- Third Party Css -->
         <link href="{{assets}}/css/hover-min.css" rel="stylesheet">
-        
+
         {% block custom_css %}{% endblock %}
 
-        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <!--script src="https://code.jquery.com/jquery-1.10.2.min.js"></script-->
+        {% block custom_js %}{% endblock %}
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -52,103 +53,9 @@
             </div>
         </div>
 
-        <!-- +++++ Welcome Section +++++ -->
-        <div id="ww">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2 centered">
-                        <img src="{{assets}}/img/user.png" class="grow-rotate">
-                        <h1>I'm Kevin!</h1>
-                        <p>
-                            Hello everybody. I'm Kevin, a Software Developer and an Devoted Cinephile. <br/>
-                            I <span class="glyphicon glyphicon-heart" style="font-size: 15px"></span> Web Development and
-                            I currently live in Cartagena de Indias (AKA La Fantástica).
-                        </p>
 
-                    </div><!-- /col-lg-8 -->
-                </div><!-- /row -->
-            </div> <!-- /container -->
-        </div><!-- /ww -->
-
-
-        <!-- +++++ Information Section +++++ -->
-
-        <div class="container pt">
-            <div class="row mt centered">
-                <h4>BASIC COMPONENTS OF MY LIFE</h4>
-                <br />
-                <a href="#">
-                    <div class="col-lg-4 hover-shadow">
-                        <span class="glyphicon glyphicon-flash"></span>
-                        <p>Software</p>
-                    </div>
-                </a>
-
-                <a href="#">
-                    <div class="col-lg-4 hover-shadow">
-                        <span class="glyphicon glyphicon-film"></span>
-                        <p>Movies</p>
-                    </div>
-                </a>
-
-                <a href="#">
-                    <div class="col-lg-4 hover-shadow">
-                        <span class="glyphicon glyphicon-star-empty"></span>
-                        <p>Social</p>
-                    </div>
-                </a>
-            </div><!-- /row -->
-
-            <div class="row mt">
-
-                <div class="col-lg-12">
-                    <h4>THE SKILLS</h4>
-
-                    <h3>
-                        <span class="label label-default">Symfony</span>
-                        <span class="label label-primary">PHP</span>
-                        <span class="label label-info">Twig</span>
-                        <span class="label label-success">Doctrine</span>
-                    </h3>
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-theme" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 90%;"></div>
-                    </div>
-
-                    <h3>
-                        <span class="label label-warning">Django</span>
-                        <span class="label label-danger">Python</span>
-                    </h3>
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-theme" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 85%;"></div>
-                    </div>
-                    
-                    <h3>
-                        <span class="label label-default">Java</span>
-                    </h3>
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-theme" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 80%;"></div>
-                    </div>
-
-                    <h3>
-                        <span class="label label-success">JQuery</span>
-                        <span class="label label-info">Javascript</span>
-                    </h3>
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-theme" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 70%;"></div>
-                    </div>
-                    
-                    <h3>
-                        <span class="label label-danger">MongoDB</span>
-                        <span class="label label-primary">Bootstrap</span>
-                        <span class="label label-info">REST</span>
-                        <span class="label label-warning">Web Scraping</span>
-                    </h3>
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-theme" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
-                    </div>
-                </div><!-- /col-lg-6 -->
-            </div><!-- /row -->
-        </div><!-- /container -->
+        {% block body %}
+        {% endblock %}
 
 
         <!-- +++++ Footer Section +++++ -->
@@ -165,7 +72,7 @@
                     </div><!-- /col-lg-4 -->
 
                     <div class="col-lg-4"></div>
-                    
+
                     <div class="col-lg-4">
                         <h4>About this site</h4>
                         <p>
@@ -185,6 +92,5 @@
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="{{assets}}/js/bootstrap.min.js"></script>
-        {% block custom_js %}{% endblock %}
     </body>
 </html>
