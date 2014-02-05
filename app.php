@@ -11,6 +11,17 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/views',
 ));
 
+$app->register(new Silex\Provider\DoctrineServiceProvider(), array(
+    'db.options' => array(
+        'driver'    => 'pdo_mysql',
+        'host'      => 'localhost',
+        'dbname'    => 'freelance',
+        'user'      => 'root',
+        'password'  => 'root',
+        'charset'   => 'utf8',
+    ),
+));
+
 
 $app['twig'] = $app->share(
     $app->extend('twig', function($twig, $app) {
@@ -19,7 +30,10 @@ $app['twig'] = $app->share(
     }));
 
 $twig = $app['twig'];
+$db = $app['db'];
+
 $RATINGS_URL = 'http://rss.imdb.com/user/ur39680938/ratings';
+$OMDB_URL = 'http://www.omdbapi.com/?i=';
 
 
 // CONTROLLERS
@@ -31,36 +45,31 @@ $app->get('/software', function () use ($twig) {
     return $twig->render('web/software.html.twig', array());
 });
 
-//<item>
-//    <pubDate>Mon, 03 Feb 2014 00:00:00 GMT</pubDate>
-//    <title>Lock, Stock and Two Smoking Barrels (1998)</title>
-//    <link>http://www.imdb.com/title/tt0120735/</link>
-//    <guid>http://www.imdb.com/title/tt0120735/</guid>
-//    <description>
-//        krsarmiento rated this 8.
-//    </description>
-//    <pubDate>Mon Feb  3 00:00:00 2014</pubDate>
-//</item>
-
-$app->get('/movies', function () use ($twig, $RATINGS_URL) {
+$app->get('/movies', function () use ($db, $twig, $RATINGS_URL, $OMDB_URL) {
     $xml = simplexml_load_file($RATINGS_URL); 
     $movies = $xml->xpath('channel/item');
     $ratingFirstIndex = strlen('krsarmiento rated this ');
+    $codeFirstIndex = strlen('http://www.imdb.com/title/');
     
     
+    $variable = file_get_contents($OMDB_URL . "tt0264464");
+    $decoded = json_decode($variable);
     
+    echo $variable;
+    var_dump($variable);
+    var_dump($decoded->Plot);
     
-    foreach( $movies as $movie ) {
-        $title = trim($movie->title);
-        $description = trim($movie->description);
-        $link = trim($movie->link);
-        
-        echo "---------------------------<br/>";
-        echo $title;
-        echo substr($description, $ratingFirstIndex, -1);
-        echo $title;
-        echo "---------------------------<br/>";
-    }
+//    $sql = "SELECT * FROM posts WHERE id = ?";
+//    $post = $db->fetchAssoc($sql, array((int) 1));
+//
+//    return  "<h1>{$post['title']}</h1>".
+//            "<p>{$post['body']}</p>";
+//    
+//    foreach( $movies as $movie ) {
+//        $title = trim($movie->title);
+//        $rating = substr(trim($movie->description), $ratingFirstIndex, -1);
+//        $code = substr(trim($movie->link), $codeFirstIndex, -1);
+//    }
     
     return "fuck you!";
 });
