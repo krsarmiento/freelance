@@ -1,42 +1,13 @@
 <?php
 require_once __DIR__.'/vendor/autoload.php';
 
-
 $app = new Silex\Application();
 
-// SETTINGS
-$app['debug'] = true;
-
-$app->register(new Silex\Provider\TwigServiceProvider(), array(
-    'twig.path' => __DIR__.'/views',
-));
-
-$app->register(new Silex\Provider\DoctrineServiceProvider(), array(
-    'db.options' => array(
-        'driver'    => 'pdo_mysql',
-        'host'      => 'localhost',
-        'dbname'    => 'freelance',
-        'user'      => 'root',
-        'password'  => 'root',
-        'charset'   => 'utf8',
-    ),
-));
+require_once __DIR__.'/config/settings.php';
 
 
-$app['twig'] = $app->share(
-    $app->extend('twig', function($twig, $app) {
-        $twig->addGlobal('assets', '/freelance/assets');
-        return $twig;
-    }));
-
-$twig = $app['twig'];
-$db = $app['db'];
-
-$RATINGS_URL = 'http://rss.imdb.com/user/ur39680938/ratings';
-$OMDB_URL = 'http://www.omdbapi.com/?i=';
 
 
-// CONTROLLERS
 $app->get('/', function () use ($twig) {
     return $twig->render('web/index.html.twig', array());
 });
@@ -46,21 +17,60 @@ $app->get('/software', function () use ($twig) {
 });
 
 $app->get('/movies', function () use ($db, $twig, $RATINGS_URL, $OMDB_URL) {
+
+    
+    
+
+    
+    return "fuck you!";
+});
+
+/*
+ * TABLA MOVIES
+ * - ID
+ * - CODE
+ * - TITLE
+ * - RATING
+ * - DATA
+ */
+
+
+$app->get('/update/imdb/ratings', function() use ($db, $OMDB_URL, $RATINGS_URL) {
     $xml = simplexml_load_file($RATINGS_URL); 
     $movies = $xml->xpath('channel/item');
     $ratingFirstIndex = strlen('krsarmiento rated this ');
     $codeFirstIndex = strlen('http://www.imdb.com/title/');
     
+    //Searching movies
+    $sql = "SELECT count(*) FROM movies";
+    $result = $db->fetchAssoc($sql, array((int) 1));
+
+    $current = (int)$result['count(*)'];
+    $new = count($movies);
     
-    $variable = file_get_contents($OMDB_URL . "tt0264464");
-    $decoded = json_decode($variable);
+    if ($new > $current) {
+        echo "Saving new " . ($new-$current) . " ratings from IMDb: ";
+        
+        for ($index = 0; $index < ($new-$current); $index++) {
+            $code = substr(trim($movies[$index]->link), $codeFirstIndex, -1);
+            
+            $movieData = array(
+                'code'      => $code,
+                'title'     => trim($movies[$index]->title),
+                'rating'    => substr(trim($movies[$index]->description), $ratingFirstIndex, -1),
+                'data'      => file_get_contents($OMDB_URL . $code)
+            );
+            
+            $db->insert('movies', $movieData);
+            echo ".";
+        }
+    } else {
+        echo "Nothing to install ...";
+    }
     
-    echo $variable;
-    var_dump($variable);
-    var_dump($decoded->Plot);
     
-//    $sql = "SELECT * FROM posts WHERE id = ?";
-//    $post = $db->fetchAssoc($sql, array((int) 1));
+    return "Bye!";
+    
 //
 //    return  "<h1>{$post['title']}</h1>".
 //            "<p>{$post['body']}</p>";
@@ -71,9 +81,6 @@ $app->get('/movies', function () use ($db, $twig, $RATINGS_URL, $OMDB_URL) {
 //        $code = substr(trim($movie->link), $codeFirstIndex, -1);
 //    }
     
-    return "fuck you!";
 });
-
-//
 
 $app->run();
