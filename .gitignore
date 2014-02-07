@@ -1,2 +1,4 @@
 vendor/
 composer.phar
+config/local_settings.php
+.project

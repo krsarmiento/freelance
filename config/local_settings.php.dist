@@ -1,0 +1,12 @@
+<?php
+$DEBUG = true;
+
+$DB_OPTIONS = array(
+    'driver'    => 'pdo_mysql',
+    'host'      => 'localhost',
+    'dbname'    => 'freelance',
+    'user'      => 'root',
+    'password'  => '',
+    'charset'   => 'utf8',
+);
+?>

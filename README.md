@@ -1,4 +1,4 @@
 krsarmiento.info
 ================
 
-Freelance Web Page and Application
+My freelance Web Page and movie application

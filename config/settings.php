@@ -1,20 +1,15 @@
 <?php
 
-$app['debug'] = true;
+require_once __DIR__.'/local_settings.php';
+
+$app['debug'] = $DEBUG;
 
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../views',
 ));
 
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
-    'db.options' => array(
-        'driver'    => 'pdo_mysql',
-        'host'      => 'localhost',
-        'dbname'    => 'freelance',
-        'user'      => 'root',
-        'password'  => 'root',
-        'charset'   => 'utf8',
-    ),
+    'db.options' => $DB_OPTIONS,
 ));
 
 
