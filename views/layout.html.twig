@@ -32,65 +32,12 @@
 
     <body>
 
-        <!-- Static navbar -->
-        <div class="navbar navbar-inverse navbar-static-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="/freelance">KRSARMIENTO</a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href=''>Programming + Movies</a>
-                        </li>
-                    </ul>
-                </div><!--/.nav-collapse -->
-            </div>
-        </div>
-
+		{% include 'include/layout/header.html.twig' %}
 
         {% block body %}
         {% endblock %}
 
-
-        <!-- +++++ Footer Section +++++ -->
-
-        <div id="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <h4>Have a Project?</h4>
-                        <p>
-                            <a href='mailto:krsarmiento@gmail.com'>krsarmiento@gmail.com</a> <br/>
-                            <a href='tel:+573004359116'>+57 300 4359 116</a>.
-                        </p>
-                    </div><!-- /col-lg-4 -->
-
-                    <div class="col-lg-4"></div>
-
-                    <div class="col-lg-4">
-                        <h4>About this site</h4>
-                        <p>
-                            Powered by: <br/>
-                            <a href="//getbootstrap.com" target="_blank">Bootstrap 3</a> & 
-                            <a href="//silex.sensiolabs.org" target="_blank">Silex</a>
-                        </p>
-                    </div><!-- /col-lg-4 -->
-
-                </div>
-
-            </div>
-        </div>
-
-
-        <!-- Bootstrap core JavaScript
-        ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <script src="{{assets}}/js/bootstrap.min.js"></script>
+		{% include 'include/layout/footer.html.twig' %}
+        
     </body>
 </html>
