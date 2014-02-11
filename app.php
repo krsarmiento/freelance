@@ -18,11 +18,29 @@ $app->get('/software', function () use ($twig) {
         });
 
 $app->get('/movies', function () use ($db, $twig, $RATINGS_URL, $OMDB_URL) {
-            return $twig->render('web/movies.html.twig', array());
-        });
-        
-$app->get('/movies/smatcrufnui', function () use ($db, $twig) {
-            return $twig->render('smatcrufnui/index.html.twig', array());
+			$ratingScores = array(
+				array('id' => 'collapse100', 'rating' => '10/10', 'movies' => array()),
+				array('id' => 'collapse95', 'rating' => '9.5/10', 'movies' => array()),
+				array('id' => 'collapse90', 'rating' => '9/10', 'movies' => array()),
+				array('id' => 'collapse85', 'rating' => '8.5/10', 'movies' => array()),
+				array('id' => 'collapse80', 'rating' => '8/10', 'movies' => array()),
+				array('id' => 'collapse75', 'rating' => '7.5/10', 'movies' => array()),
+				array('id' => 'collapse70', 'rating' => '7/10', 'movies' => array()),
+			);
+			
+			$mostViewed = array(
+				array('id' => 'mvactors', 'label' => 'Most Viewed Actors', 'entities' => array()),
+				array('id' => 'mvdirectors', 'label' => 'Most Viewed Directors', 'entities' => array()),
+				array('id' => 'mvdecade', 'label' => 'Most Viewed Decades', 'entities' => array()),
+				array('id' => 'mvgenre', 'label' => 'Most Viewed Genres', 'entities' => array()),
+			);
+			
+			$data = array(
+				'ratingScores' => $ratingScores,
+				'mostViewed' => $mostViewed
+			);
+			
+			return $twig->render('smatcrufnui/index.html.twig', $data);
         });
 
 $app->get('/update/imdb/ratings', function() use ($db, $OMDB_URL, $RATINGS_URL) {
