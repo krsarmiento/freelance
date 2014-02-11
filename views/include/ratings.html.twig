@@ -1,20 +1,33 @@
 <div class="panel-group" id="ratingsAccordion">
-	
+
 	{% for score in ratingScores %}
-	  <div class="panel panel-default">
-	    <div class="panel-heading">
-	      <h4 class="panel-title">
-	        <a data-toggle="collapse" data-parent="#ratingsAccordion" href="#{{ score.id }}">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#ratingsAccordion" href="#{{ score.id }}">
 	          {{ score.rating }}
-	        </a>
-	      </h4>
-	    </div>
-	    <div id="{{ score.id }}" class="panel-collapse collapse {% if loop.index == 1 %}in{% endif %}">
-	      <div class="panel-body">
-	        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-	      </div>
-	    </div>
-	  </div>
+                    </a>
+                </h4>
+            </div>
+            <div id="{{ score.id }}" class="panel-collapse collapse {% if loop.index == 1 %}in{% endif %}">
+                <div class="panel-body">
+                    
+                    <div class="row">
+                        
+                        {% for movie in score.movies %}
+                            <div class="col-xs-6 col-md-3">
+                                <a href="#" class="thumbnail">
+                                    {% set poster_size = movie.poster|length %}
+                                    <img style="height: 180px; width: 90%; display: block;" src="{{ movie.poster|slice(5, poster_size) }}">
+                                </a>
+                            </div>
+                        {% endfor %}
+                        
+                    </div>
+
+                </div>
+            </div>
+        </div>
 	{% endfor %}
-  
-</div>
+
+    </div>

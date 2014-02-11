@@ -19,7 +19,7 @@ $app->get('/software', function () use ($twig) {
 
 $app->get('/movies', function () use ($db, $twig, $RATINGS_URL, $OMDB_URL) {
 			$ratingScores = array(
-				array('id' => 'collapse100', 'rating' => '10/10', 'movies' => array()),
+				array('id' => 'collapse100', 'rating' => '10/10', 'movies' => getMovies(10)),
 				array('id' => 'collapse95', 'rating' => '9.5/10', 'movies' => array()),
 				array('id' => 'collapse90', 'rating' => '9/10', 'movies' => array()),
 				array('id' => 'collapse85', 'rating' => '8.5/10', 'movies' => array()),
