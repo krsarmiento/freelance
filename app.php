@@ -7,7 +7,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 $app = new Silex\Application();
 
 require_once __DIR__ . '/config/settings.php';
-
+require_once __DIR__ . '/src/functions.php';
 
 $app->get('/', function () use ($twig) {
             return $twig->render('web/index.html.twig', array());
@@ -24,7 +24,6 @@ $app->get('/movies', function () use ($db, $twig, $RATINGS_URL, $OMDB_URL) {
 $app->get('/movies/smatcrufnui', function () use ($db, $twig) {
             return $twig->render('smatcrufnui/index.html.twig', array());
         });
-
 
 $app->get('/update/imdb/ratings', function() use ($db, $OMDB_URL, $RATINGS_URL) {
             $xml = simplexml_load_file($RATINGS_URL);
@@ -72,44 +71,3 @@ $app->get('/update/imdb/ratings', function() use ($db, $OMDB_URL, $RATINGS_URL) 
         });
 
 $app->run();
-
-
-//Functions
-function updateStatistics($db) {
-    $tableName = 'statistics';
-
-    //Removing old values
-    $db->executeUpdate('DELETE FROM ' . $tableName . ' WHERE 1');
-
-    //Total movies
-    $sql = "SELECT count(*) FROM movies";
-    $result = $db->fetchAssoc($sql, array((int) 1));
-    $db->insert($tableName, array('name' => 'allMovies', 'value' => (int) $result['count(*)']));
-
-    //Most viewed actor
-    $sql = "SELECT actors FROM movies";
-    $movies = $db->fetchAll($sql);
-    $db->insert($tableName, array('name' => 'mostViewedActor', 'value' => getHighest('actors', $movies)));
-
-    //Most viewed director
-    $sql = "SELECT director FROM movies";
-    $movies = $db->fetchAll($sql);
-    $db->insert($tableName, array('name' => 'mostViewedDirector', 'value' => getHighest('director', $movies)));
-}
-
-function getHighest($name, $movies) {
-    $elements = array();
-
-    foreach ($movies as $movie) {
-        foreach (split(',', $movie[$name]) as $element) {
-            if (array_key_exists($element, $elements))
-                $elements[$element] += 1;
-            else
-                $elements[$element] = 1;
-        }
-    }
-
-    arsort($elements);
-    reset($elements);
-    return key($elements);
-}
