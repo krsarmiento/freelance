@@ -48,11 +48,22 @@ function getHighest($name, $movies) {
     return substr($result, 0, -1);
 }
 
+function getMovie($id) {
+    global $db;
+    $sql = "SELECT * FROM movies where id=".$id;
+    $result = $db->fetchAll($sql);
+    return $result[0];
+}
+
 function getMovies($rating) {
     global $db;
     $sql = "SELECT * FROM movies where my_rating=".$rating;
     $movies = $db->fetchAll($sql);
     return $movies;
+}
+
+function getPoster($url) {
+    return file_get_contents($url);
 }
 
 function convertImage($url){

@@ -6,12 +6,12 @@
 <div class="container pt">
     <div class="row mt">
         <div class="col-lg-6 col-lg-offset-3 centered">
-			<h3>Movies</h3>
-		    <hr>
-			<button class="btn btn-lg btn-warning" data-toggle="modal" data-target="#myModal">
-				<span class="glyphicon glyphicon-facetime-video" style="color: white; font-size: 15px"></span> 
-			  	App Info
-			</button>
+            <h3>Movies</h3>
+            <hr>
+            <button class="btn btn-lg btn-warning" data-toggle="modal" data-target="#myModal">
+                <span class="glyphicon glyphicon-facetime-video" style="color: white; font-size: 15px"></span> 
+                App Info
+            </button>
         </div>
     </div>
 </div>
@@ -22,10 +22,10 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
                 <p>
-                	<a href="http://www.aha-soft.com" target="_blank" style="cursor: default">
-                		<img src="{{assets}}/img/trailer.png" width="50px" height="50px">
-                	</a>
-                	<ba>My Ratings</ba>
+                    <a href="http://www.aha-soft.com" target="_blank" style="cursor: default">
+                        <img src="{{assets}}/img/trailer.png" width="50px" height="50px">
+                    </a>
+                <ba>My Ratings</ba>
                 </p>
                 {% include 'include/ratings.html.twig' %}
             </div>
@@ -39,10 +39,10 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
                 <p>
-                	<a href="http://www.aha-soft.com" target="_blank" style="cursor: default">
-                		<img src="{{assets}}/img/cinema.png" width="50px" height="50px">
-                	</a>
-                	<ba>Most Viewed</ba>
+                    <a href="http://www.aha-soft.com" target="_blank" style="cursor: default">
+                        <img src="{{assets}}/img/cinema.png" width="50px" height="50px">
+                    </a>
+                <ba>Most Viewed</ba>
                 </p>
                 {% include 'include/most_viewed.html.twig' %}
             </div>
@@ -53,24 +53,24 @@
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">App Info</h4>
-      </div>
-      <div class="modal-body" style="text-align: center">
-        <p>
-            I'm a huge movie fan and, for the sake of boredom and to prove I know how to do a "Hello World!", 
-            I decided to create a mini movie app using my IMDb account and the OMDb API. 
-        </p>
-        <p>
-            You are free to call it however you want, but I like to name it <br/>
-            <strong>Super Movie App That Can Rate Using Float Numbers Unlike IMDb</strong>, or <em>SMATCRUFNUI</em>.
-        </p>
-      </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">App Info</h4>
+            </div>
+            <div class="modal-body" style="text-align: center">
+                <p>
+                    I'm a huge movie fan and, for the sake of boredom and to prove I know how to do a "Hello World!", 
+                    I decided to create a mini movie app using my IMDb account and the OMDb API. 
+                </p>
+                <p>
+                    You are free to call it however you want, but I like to name it <br/>
+                    <strong>Super Movie App That Can Rate Using Float Numbers Unlike IMDb</strong>, or <em>SMATCRUFNUI</em>.
+                </p>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 

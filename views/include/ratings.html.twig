@@ -18,7 +18,7 @@
                             <div class="col-xs-6 col-md-3">
                                 <a href="#" class="thumbnail">
                                     {% set poster_size = movie.poster|length %}
-                                    <img style="height: 180px; width: 90%; display: block;" src="{{ movie.poster }}">
+                                    <img src="load/poster/{{ movie.id }}" id="poster-{{movie.id}}" style="height: 180px; width: 90%; display: block;">
                                 </a>
                             </div>
                         {% endfor %}

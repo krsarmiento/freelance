@@ -1,6 +1,10 @@
 <?php
 
+use Symfony\Component\HttpFoundation\Response;
+
+
 require_once __DIR__ . '/functions.php';
+
 
 $app->get('/', function () use ($twig) {
             return $twig->render('web/index.html.twig', array());
@@ -8,6 +12,11 @@ $app->get('/', function () use ($twig) {
 
 $app->get('/software', function () use ($twig) {
             return $twig->render('web/software.html.twig', array());
+        });
+        
+$app->get('/load/poster/{id}', function ($id) use ($twig) {
+            $movie = getMovie($id);
+            return new Response(getPoster($movie['poster']), 200, array('Content-type'=> 'image/jpg'));
         });
 
 $app->get('/movies', function () use ($db, $twig, $RATINGS_URL, $OMDB_URL, $SCORE_RANGES, $HIGHEST_SCORE) {
@@ -69,7 +78,7 @@ $app->get('/update/imdb/ratings', function() use ($db, $OMDB_URL, $RATINGS_URL) 
                         'director' => str_replace(", ", ",", $movieData->Director),
                         'actors' => str_replace(", ", ",", $movieData->Actors),
                         'plot' => $movieData->Plot,
-                        'poster' => convertImage($movieData->Poster)
+                        'poster' => $movieData->Poster
                     );
 
                     $db->insert('movies', $movieData);
