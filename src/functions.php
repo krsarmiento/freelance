@@ -54,3 +54,9 @@ function getMovies($rating) {
     $movies = $db->fetchAll($sql);
     return $movies;
 }
+
+function convertImage($url){
+    $imagedata = file_get_contents($url);
+    $base64 = 'data:image/jpg;base64,' . base64_encode($imagedata);
+    return $base64;
+}
