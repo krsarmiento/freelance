@@ -17,11 +17,13 @@
                         {% for movie in score.movies %}
                             <div class="col-xs-6 col-md-3">
                                 <a href="#" class="thumbnail">
-                                    {% set poster_size = movie.poster|length %}
                                     <img src="load/poster/{{ movie.id }}" id="poster-{{movie.id}}" style="height: 180px; width: 90%; display: block;">
                                 </a>
                             </div>
                         {% endfor %}
+                        
+                        <div class="moviesLoadMore" id="{{ score.float_rating }},2"></div>
+						<a class="btn btn-warning">Load more</a>
                         
                     </div>
 

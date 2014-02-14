@@ -55,9 +55,11 @@ function getMovie($id) {
     return $result[0];
 }
 
-function getMovies($rating) {
+function getMovies($rating, $times, $limit) {
     global $db;
-    $sql = "SELECT * FROM movies where my_rating=".$rating;
+	$finalLimit = ($times-1)*$limit . ', ' . $limit;
+	
+    $sql = "SELECT * FROM movies where my_rating=".$rating." LIMIT ".$finalLimit;
     $movies = $db->fetchAll($sql);
     return $movies;
 }

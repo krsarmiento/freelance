@@ -31,3 +31,4 @@ $SCORE_RANGES = array(
 );
 
 $HIGHEST_SCORE = 10;
+$MOVIE_LIMIT = 8;
