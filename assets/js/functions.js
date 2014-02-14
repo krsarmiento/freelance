@@ -19,5 +19,17 @@ $(document).ready(function() {
        
     });
     
+    $('.displayMovie').on('click', function() {
+       var id = this.id;
+       
+       $.ajax({
+           url: 'ajax/movie/display/' + id
+       }).done(function (modal) {
+           alert(modal);
+           $('body').append(modal);
+           $('#movieModal').modal();
+       });
+    });
+    
     
 });

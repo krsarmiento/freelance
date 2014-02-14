@@ -38,11 +38,21 @@ $app -> get('/movies', function() use ($db, $twig, $RATINGS_URL, $OMDB_URL, $SCO
 });
 
 $app -> get('/ajax/movies/load/{rating}/{times}', function($rating, $times) use ($db, $twig, $MOVIE_LIMIT) {
-	$data = array(
-		'movies' => getMovies($rating, $times, $MOVIE_LIMIT)
+        $data = array(
+            'movies' => getMovies($rating, $times, $MOVIE_LIMIT)
 	);
 
 	return $twig -> render('smatcrufnui/ajax_load_movies.html.twig', $data);
+});
+
+
+$app -> get('/ajax/movie/display/{id}', function($id) use ($twig, $IMDB_MOVIE_URL) {
+	$data = array(
+		'movie' => getMovie($id),
+                'imdb_url' => $IMDB_MOVIE_URL
+	);
+
+	return $twig -> render('smatcrufnui/ajax_movie_modal.html.twig', $data);
 });
 
 

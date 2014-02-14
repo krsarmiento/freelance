@@ -32,3 +32,4 @@ $SCORE_RANGES = array(
 
 $HIGHEST_SCORE = 10;
 $MOVIE_LIMIT = 8;
+$IMDB_MOVIE_URL = 'http://www.imdb.com/title/';

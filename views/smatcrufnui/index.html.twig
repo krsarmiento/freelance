@@ -8,6 +8,65 @@
 {% block body %}
 
 
+<!-- Buttons to trigger modal -->
+<h1>Twitter Bootstrap Modal bug?</h1>
+<p>
+    While trying to use Bootstrap's modal plugin multiple times on one page, I noticed unexpected behavior. To duplicate:
+    <ol>
+        <li>Click on button "Modal 1"</li>
+        <li>Notice that modal loads with text that starts "Phasellus <em>tincidunt gravida</em>..." (this text comes from <a href="http://fiddle.jshell.net/jhfrench/6K8rD/show/">http://fiddle.jshell.net/jhfrench/6K8rD/show/</a>)</li>
+        <li>Click on button "Modal 2"</li>
+        <li>Notice that modal loads with text that starts "Phasellus <em>tincidunt gravida</em>..." (this text was supposed to start "Phasellus <em>egestas est eu</em>..." and come from <a href="http://fiddle.jshell.net/jhfrench/AWSnt/show/">http://fiddle.jshell.net/jhfrench/AWSnt/show/</a>)</li>
+        <li>Now reload this screen (F5), then click on button "Modal 2" and notice that the modal loads with text "Phasellus <em>egestas est eu</em>..."</li>
+        <li>Click on button "Modal 1" and notice that modal still only shows "Phasellus <em>egestas est eu</em>..."</li>
+    </ol>
+</p>
+<hr />
+<h3>This button shows a modal (<code>#utility</code>) with text "Phasellus <em>tincidunt gravida</em>..."</h3>
+<br />
+<a id="file_attach" data-toggle="modal" href="http://fiddle.jshell.net/jhfrench/6K8rD/show/" data-target="#utility" class="btn">Modal 1</a><br />
+<h3>This button should invoke the same modal (<code>#utility</code>), but fill it with text "Phasellus <em>egestas est eu</em>..."</h3>
+<br />
+<a id="file_attach" data-toggle="modal" href="http://fiddle.jshell.net/jhfrench/AWSnt/show/" data-target="#utility" class="btn">Modal 2</a><br />
+<br />
+<!-- Modal -->
+<div id="utility" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h1 id="myModalLabel">Click outside modal to close it</h1>
+  </div>
+  <div class="modal-body" id="utility_body">
+    <p>One fine body…this is getting replaced with content that comes from passed-in href</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal">Close</button>
+    <button class="btn btn-primary">Save changes</button>
+  </div>
+</div>
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="container pt">
     <div class="row mt">
         <div class="col-lg-6 col-lg-offset-3 centered">
