@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS `movies` (
   `actors` text NOT NULL,
   `plot` text NOT NULL,
   `poster` text NOT NULL,
+  `ranking` tinyint(2) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 

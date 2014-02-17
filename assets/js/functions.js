@@ -22,14 +22,18 @@ $(document).ready(function() {
     $('.displayMovie').on('click', function() {
        var id = this.id;
        
-       $.ajax({
-           url: 'ajax/movie/display/' + id
-       }).done(function (modal) {
-           alert(modal);
-           $('body').append(modal);
-           $('#movieModal').modal();
-       });
+       
+       $.getJSON( 'ajax/movie/data/' + id, function( data ) {
+            $('#movieModalTitle').html(data.movie.title);
+            $('#movieModalRating').html(data.movie.my_rating);
+            $('#movieModalImdbUrl').attr('href', data.imdb_url +data.movie.code);
+            $('#movieModalPoster').html("<img src='load/poster/"+data.movie.id+"' />");
+            $('#movieModal').modal('show');
+        });
+       
     });
+    
+    
     
     
 });

@@ -46,13 +46,16 @@ $app -> get('/ajax/movies/load/{rating}/{times}', function($rating, $times) use 
 });
 
 
-$app -> get('/ajax/movie/display/{id}', function($id) use ($twig, $IMDB_MOVIE_URL) {
+$app -> get('/ajax/movie/data/{id}', function($id) use ($twig, $IMDB_MOVIE_URL) {
 	$data = array(
 		'movie' => getMovie($id),
                 'imdb_url' => $IMDB_MOVIE_URL
 	);
 
-	return $twig -> render('smatcrufnui/ajax_movie_modal.html.twig', $data);
+        $response = new Response();
+        $response->setContent(json_encode($data));
+        $response->headers->set('Content-Type', 'application/json');
+	return $response;
 });
 
 
