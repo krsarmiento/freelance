@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `movies` (
   `title` text NOT NULL,
   `my_rating` float NOT NULL,
   `imdb_rating` float NOT NULL,
-  `metascore` tinyint(2) NOT NULL,
+  `metascore` float NOT NULL,
   `year` smallint(4) NOT NULL,
   `genre` text NOT NULL,
   `director` text NOT NULL,

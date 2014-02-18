@@ -60,7 +60,7 @@ $app -> get('/ajax/movie/data/{id}', function($id) use ($twig, $IMDB_MOVIE_URL) 
 
 
 
-$app -> get('/update/imdb/ratings', function() use ($db, $OMDB_URL, $RATINGS_URL) {
+$app -> get('/update/imdb/ratings', function() use ($db, $OMDB_URL, $RATINGS_URL, $HIGHEST_SCORE) {
 	$xml = simplexml_load_file($RATINGS_URL);
 	$movies = $xml -> xpath('channel/item');
 	$ratingFirstIndex = strlen('krsarmiento rated this ');
@@ -81,7 +81,7 @@ $app -> get('/update/imdb/ratings', function() use ($db, $OMDB_URL, $RATINGS_URL
 			$data = file_get_contents($OMDB_URL . $code);
 			$movieData = json_decode($data);
 
-			$movieData = array('code' => $code, 'title' => $movieData -> Title, 'my_rating' => substr(trim($movies[$index] -> description), $ratingFirstIndex, -1), 'imdb_rating' => (float)$movieData -> imdbRating, 'metascore' => (int)$movieData -> Metascore, 'year' => $movieData -> Year, 'genre' => str_replace(", ", ",", $movieData -> Genre), 'director' => str_replace(", ", ",", $movieData -> Director), 'actors' => str_replace(", ", ",", $movieData -> Actors), 'plot' => $movieData -> Plot, 'poster' => $movieData -> Poster);
+			$movieData = array('code' => $code, 'title' => $movieData -> Title, 'my_rating' => (float)substr(trim($movies[$index] -> description), $ratingFirstIndex, -1), 'imdb_rating' => (float)$movieData -> imdbRating, 'metascore' => (float)((int)$movieData->Metascore / $HIGHEST_SCORE), 'year' => $movieData -> Year, 'genre' => str_replace(", ", ",", $movieData -> Genre), 'director' => str_replace(", ", ",", $movieData -> Director), 'actors' => str_replace(", ", ",", $movieData -> Actors), 'plot' => $movieData -> Plot, 'poster' => $movieData -> Poster);
 
 			$db -> insert('movies', $movieData);
 		}
@@ -91,4 +91,21 @@ $app -> get('/update/imdb/ratings', function() use ($db, $OMDB_URL, $RATINGS_URL
 	}
 
 	return "Bye!";
+});
+
+$app -> get('/test/update', function() use ($db, $OMDB_URL, $RATINGS_URL, $HIGHEST_SCORE) {
+    $code = 'tt0106966';
+    $xml = simplexml_load_file($RATINGS_URL);
+    $movies = $xml -> xpath('channel/item');
+    $ratingFirstIndex = strlen('krsarmiento rated this ');
+    $data = file_get_contents($OMDB_URL . $code);
+    $movieData = json_decode($data);
+
+    $movieData = array('code' => $code, 'title' => $movieData -> Title, 'my_rating' => 9.99, 'imdb_rating' => (float)$movieData -> imdbRating, 'metascore' => (float)((int)$movieData->Metascore / $HIGHEST_SCORE), 'year' => $movieData -> Year, 'genre' => str_replace(", ", ",", $movieData -> Genre), 'director' => str_replace(", ", ",", $movieData -> Director), 'actors' => str_replace(", ", ",", $movieData -> Actors), 'plot' => $movieData -> Plot, 'poster' => $movieData -> Poster);
+    
+    var_dump($movieData);
+    
+    testStatistics($db);
+    
+    return "Done!";
 });

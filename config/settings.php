@@ -24,7 +24,7 @@ $db = $app['db'];
 
 $RATINGS_URL = 'http://rss.imdb.com/user/ur39680938/ratings';
 $OMDB_URL = 'http://www.omdbapi.com/?i=';
-$MOST_VIEWED_MAX = 5;
+$MOST_VIEWED_MAX = 8;
 
 $SCORE_RANGES = array(
     100, 95, 90, 85, 80, 70

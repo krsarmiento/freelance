@@ -11,12 +11,12 @@ function updateStatistics($db) {
     $result = $db->fetchAssoc($sql, array((int) 1));
     $db->insert($tableName, array('name' => 'allMovies', 'value' => (int) $result['count(*)']));
 
-    //Most viewed actor
+    //Most viewed actors
     $sql = "SELECT actors FROM movies";
     $movies = $db->fetchAll($sql);
     $db->insert($tableName, array('name' => 'mostViewedActors', 'value' => getHighest('actors', $movies)));
 
-    //Most viewed director
+    //Most viewed directors
     $sql = "SELECT director FROM movies";
     $movies = $db->fetchAll($sql);
     $db->insert($tableName, array('name' => 'mostViewedDirectors', 'value' => getHighest('director', $movies)));
@@ -72,4 +72,29 @@ function convertImage($url){
     $imagedata = file_get_contents($url);
     $base64 = 'data:image/jpg;base64,' . base64_encode($imagedata);
     return $base64;
+}
+
+
+
+
+
+
+
+
+
+function testStatistics($db) {
+    //Total movies
+    $sql = "SELECT count(*) FROM movies";
+    $result = $db->fetchAssoc($sql, array((int) 1));
+    var_dump(array('name' => 'allMovies', 'value' => (int) $result['count(*)']));
+
+    //Most viewed actors
+    $sql = "SELECT actors FROM movies";
+    $movies = $db->fetchAll($sql);
+    var_dump($tableName, array('name' => 'mostViewedActors', 'value' => getHighest('actors', $movies)));
+
+    //Most viewed directors
+    $sql = "SELECT director FROM movies";
+    $movies = $db->fetchAll($sql);
+    var_dump($tableName, array('name' => 'mostViewedDirectors', 'value' => getHighest('director', $movies)));
 }
