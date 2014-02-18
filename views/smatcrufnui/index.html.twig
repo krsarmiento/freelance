@@ -2,14 +2,40 @@
 
 {% block custom_js %}
 <script type="text/javascript" src="{{assets}}/js/functions.js"></script>
+<script type="text/javascript">
+    function displayMovie(id) {
+        $.getJSON( 'ajax/movie/data/' + id, function( data ) {
+            $('#movieModalTitle').html(data.movie.title);
+            $('#movieModalPlot').html(data.movie.plot);
+            
+            
+            var myRating = parseFloat(data.movie.my_rating).toFixed(1);
+            var imdbRating = parseFloat(data.movie.imdb_rating).toFixed(1);
+            var metascore = parseFloat(data.movie.metascore).toFixed(1);
+            
+            if (data.movie.my_rating == 10)
+                myRating = 10;
+            
+            if (data.movie.metascore == 0.0)
+                metascore = 'N/A';
+            
+            if (data.movie.metascore == 10)
+                metascore = 10;
+            
+            $('#movieModalMyRating').html(myRating);
+            $('#movieModalImdbRating').html(imdbRating);
+            $('#movieModalMetacriticRating').html(metascore);
+            
+            $('#movieModalImdbUrl').attr('href', data.imdb_url +data.movie.code);
+            $('#movieModalPoster').html("<img style='max-width: 264px;' src='load/poster/"+data.movie.id+"' />");
+            $('#movieModal').modal('show');
+        });
+    }
+</script>
 {% endblock %}
 
 
 {% block body %}
-
-<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#movieModal">
-  Launch demo modal
-</button>
 
 <div class="container pt">
     <div class="row mt">
@@ -77,6 +103,12 @@
                     You are free to call it however you want, but I like to name it <br/>
                     <strong>Super Movie App That Can Rate Using Float Numbers Unlike IMDb</strong>, or <em>SMATCRUFNUI</em>.
                 </p>
+                <p>
+                    Information courtesy of
+                    IMDb
+                    (http://www.imdb.com).
+                    Used with permission.
+                </p>
             </div>
         </div>
     </div>
@@ -95,25 +127,14 @@
           <div class="row">
               
             <div class="col-md-6">
-                
-                <div id="movieModalPoster">
-                    <img src="http://ia.media-imdb.com/images/M/MV5BMTYzMzU4NDUwOF5BMl5BanBnXkFtZTcwMTM5MjA5Ng@@._V1_SX214_.jpg"/>
-                </div>
-                
+                <div id="movieModalPoster"></div>
             </div>
               
             <div class="col-md-6">
-
                 <h2>Plot</h2>
-                
-                <div id="movieModalPlot">
-                    A married couple are faced with a difficult decision - to improve the life of their child by moving to another country or to stay in Iran and look after a deteriorating parent who has Alzheimer's disease.
-                </div>
-                
+                <div id="movieModalPlot"></div>
                 <hr/>
-
                 <h2>Ratings</h2>
-                
                 <div class="row" style="font-size: 20px">
                 
                     <div class="col-md-6">
@@ -125,11 +146,11 @@
                     </div>
                     
                     <div class="col-md-6" style="font-family: Courier New">
-                        <span class="label label-primary" id="movieModalMyRating">9.0</span>
+                        <span class="label label-primary" id="movieModalMyRating"></span>
                         <br/>
-                        <span class="label label-warning" id="movieModalImdbRating" style="background-color: #DDCC00; color: #000">8.5</span>
+                        <span class="label label-warning" id="movieModalImdbRating" style="background-color: #DDCC00; color: #000"></span>
                         <br/>
-                        <span class="label label-success" id="movieModalMetacriticRating" style="background-color: #6c3">9.5</span>
+                        <span class="label label-success" id="movieModalMetacriticRating" style="background-color: #6c3"></span>
                     </div>
 
                 </div>

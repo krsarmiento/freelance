@@ -33,3 +33,5 @@ $SCORE_RANGES = array(
 $HIGHEST_SCORE = 10;
 $MOVIE_LIMIT = 8;
 $IMDB_MOVIE_URL = 'http://www.imdb.com/title/';
+$IMDB_NAME_URL = 'http://www.imdb.com/name/';
+$IMDB_FIND_URL = 'http://www.imdb.com/xml/find?json=1&nr=1&nm=on&q=';

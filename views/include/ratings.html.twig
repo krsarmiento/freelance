@@ -16,7 +16,7 @@
                         
                         {% for movie in score.movies %}
                             <div class="col-xs-6 col-md-3">
-                                <a href="#" class="thumbnail displayMovie" id="{{ movie.id }}">
+                                <a href="javascript:void(0)" class="thumbnail displayMovie" id="{{ movie.id }}" onclick="displayMovie({{movie.id}})">
                                     <img src="load/poster/{{ movie.id }}" id="poster-{{movie.id}}" style="height: 180px; width: 90%; display: block;">
                                 </a>
                             </div>
