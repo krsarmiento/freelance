@@ -1,6 +1,8 @@
 <?php
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Sunra\PhpSimple\HtmlDomParser;
 
 require_once __DIR__ . '/functions.php';
 
@@ -92,6 +94,23 @@ $app -> get('/update/imdb/ratings', function() use ($db, $OMDB_URL, $RATINGS_URL
 
 	return "Bye!";
 });
+
+
+$app -> get('/ajax/load/photo', function(Request $request) use ($db, $IMDB_NAME_URL, $IMDB_FIND_URL) {
+	
+        $name = $request->query->get('name');
+        $url = $IMDB_FIND_URL . urlencode($name);
+        $response = file_get_contents($url);
+        $data = json_decode($response);
+        $name = $data->name_popular;
+        
+        $dom = HtmlDomParser::file_get_html( $IMDB_NAME_URL . $name[0]->id );
+        $image = $dom->find('img[id=name-poster]', 0);
+
+        return new Response(file_get_contents($image->attr['src']), 200, array('Content-type' => 'image/jpg'));
+});
+
+
 
 $app -> get('/test/update', function() use ($db, $OMDB_URL, $RATINGS_URL, $HIGHEST_SCORE) {
     $code = 'tt0106966';

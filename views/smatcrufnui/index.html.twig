@@ -5,9 +5,8 @@
 <script type="text/javascript">
     function displayMovie(id) {
         $.getJSON( 'ajax/movie/data/' + id, function( data ) {
-            $('#movieModalTitle').html(data.movie.title);
+            $('#movieModalTitle').html(data.movie.title + " (" + data.movie.year + ")");
             $('#movieModalPlot').html(data.movie.plot);
-            
             
             var myRating = parseFloat(data.movie.my_rating).toFixed(1);
             var imdbRating = parseFloat(data.movie.imdb_rating).toFixed(1);
@@ -119,7 +118,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="movieModalTitle">A Separation (2011)</h4>
+        <h4 class="modal-title" id="movieModalTitle"></h4>
       </div>
       <div class="modal-body">
           
