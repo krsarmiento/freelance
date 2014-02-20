@@ -31,8 +31,11 @@ $app -> get('/movies', function() use ($db, $twig, $RATINGS_URL, $OMDB_URL, $SCO
 			'movies' => getMovies($rating, 1, $MOVIE_LIMIT)
 		);
 	}
-
-	$mostViewed = array( array('id' => 'mvactors', 'label' => 'Most Viewed Actors', 'entities' => array()), array('id' => 'mvdirectors', 'label' => 'Most Viewed Directors', 'entities' => array()), array('id' => 'mvdecade', 'label' => 'Most Viewed Decades', 'entities' => array()), array('id' => 'mvgenre', 'label' => 'Most Viewed Genres', 'entities' => array()), );
+        
+	$mostViewed = array( 
+            array('id' => 'mvactors', 'label' => 'Most Viewed Actors', 'entities' => getStatistic('mostViewedActors')), 
+            array('id' => 'mvdirectors', 'label' => 'Most Viewed Directors', 'entities' => getStatistic('mostViewedDirectors')), 
+        );
 
 	$data = array('ratingScores' => $ratingScores, 'mostViewed' => $mostViewed);
 
@@ -63,6 +66,8 @@ $app -> get('/ajax/movie/data/{id}', function($id) use ($twig, $IMDB_MOVIE_URL) 
 
 
 $app -> get('/update/imdb/ratings', function() use ($db, $OMDB_URL, $RATINGS_URL, $HIGHEST_SCORE) {
+        updateStatistics($db);
+        return "...";
 	$xml = simplexml_load_file($RATINGS_URL);
 	$movies = $xml -> xpath('channel/item');
 	$ratingFirstIndex = strlen('krsarmiento rated this ');
@@ -98,16 +103,24 @@ $app -> get('/update/imdb/ratings', function() use ($db, $OMDB_URL, $RATINGS_URL
 
 $app -> get('/ajax/load/photo', function(Request $request) use ($db, $IMDB_NAME_URL, $IMDB_FIND_URL) {
 	
+        $responsePhoto = null;
         $name = $request->query->get('name');
-        $url = $IMDB_FIND_URL . urlencode($name);
-        $response = file_get_contents($url);
-        $data = json_decode($response);
-        $name = $data->name_popular;
-        
-        $dom = HtmlDomParser::file_get_html( $IMDB_NAME_URL . $name[0]->id );
-        $image = $dom->find('img[id=name-poster]', 0);
+        $photo = getImage($name);
+        if ($photo) {
+            $responsePhoto = $photo;
+        } else {
+            $url = $IMDB_FIND_URL . urlencode($name);
+            $response = file_get_contents($url);
+            $data = json_decode($response);
+            $name = $data->name_popular;
 
-        return new Response(file_get_contents($image->attr['src']), 200, array('Content-type' => 'image/jpg'));
+            $dom = HtmlDomParser::file_get_html( $IMDB_NAME_URL . $name[0]->id );
+            $image = $dom->find('img[id=name-poster]', 0);
+            saveImage($name[0]->name, $image->attr['src']);
+            $responsePhoto = file_get_contents($image->attr['src']);
+        }
+
+        return new Response($responsePhoto, 200, array('Content-type' => 'image/jpg'));
 });
 
 
