@@ -1,0 +1,28 @@
+<div class="panel-group" id="mostViewedAccordion">
+	
+	{% for category in favorites %}
+	  <div class="panel panel-default">
+	    <div class="panel-heading">
+	      <h4 class="panel-title">
+	        <a data-toggle="collapse" data-parent="#mostViewedAccordion" href="#{{ category.id }}">
+	          {{ category.label }}
+	        </a>
+	      </h4>
+	    </div>
+	    <div id="{{ category.id }}" class="panel-collapse collapse {% if loop.index == 1 %}in{% endif %}">
+	      <div class="panel-body">
+                      <div class="row">
+                        {% for entity in category.entities %}
+                            <div class="col-xs-6 col-md-3">
+                                <a href="javascript:void(0)" class="thumbnail">
+                                    <img src="{{entity.image}}" style="height: 180px; width: 90%; display: block;">
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>  
+	      </div>
+	    </div>
+	  </div>
+	{% endfor %}
+  
+</div>

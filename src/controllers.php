@@ -32,12 +32,17 @@ $app -> get('/movies', function() use ($db, $twig, $RATINGS_URL, $OMDB_URL, $SCO
 		);
 	}
         
+        $favorites = array(
+            array('id' => 'favactors', 'label' => 'Favorite Actors', 'entities' => getStatistic('favoriteActors')), 
+            array('id' => 'favactresses', 'label' => 'Favorite Actresses', 'entities' => getStatistic('favoriteActresses')), 
+        );
+        
 	$mostViewed = array( 
             array('id' => 'mvactors', 'label' => 'Most Viewed Actors', 'entities' => getStatistic('mostViewedActors')), 
             array('id' => 'mvdirectors', 'label' => 'Most Viewed Directors', 'entities' => getStatistic('mostViewedDirectors')), 
         );
 
-	$data = array('ratingScores' => $ratingScores, 'mostViewed' => $mostViewed);
+	$data = array('ratingScores' => $ratingScores, 'favorites' => $favorites,'mostViewed' => $mostViewed);
 
 	return $twig -> render('smatcrufnui/index.html.twig', $data);
 });
@@ -98,29 +103,6 @@ $app -> get('/update/imdb/ratings', function() use ($db, $OMDB_URL, $RATINGS_URL
 	}
 
 	return "Bye!";
-});
-
-
-$app -> get('/ajax/load/photo', function(Request $request) use ($db, $IMDB_NAME_URL, $IMDB_FIND_URL) {
-	
-        $responsePhoto = null;
-        $name = $request->query->get('name');
-        $photo = getImage($name);
-        if ($photo) {
-            $responsePhoto = $photo;
-        } else {
-            $url = $IMDB_FIND_URL . urlencode($name);
-            $response = file_get_contents($url);
-            $data = json_decode($response);
-            $name = $data->name_popular;
-
-            $dom = HtmlDomParser::file_get_html( $IMDB_NAME_URL . $name[0]->id );
-            $image = $dom->find('img[id=name-poster]', 0);
-            saveImage($name[0]->name, $image->attr['src']);
-            $responsePhoto = file_get_contents($image->attr['src']);
-        }
-
-        return new Response($responsePhoto, 200, array('Content-type' => 'image/jpg'));
 });
 
 

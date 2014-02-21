@@ -3,6 +3,10 @@
 use Sunra\PhpSimple\HtmlDomParser;
 
 function updateStatistics($db) {
+    
+    global $FAVORITE_ACTORS;
+    global $FAVORITE_ACTRESSES;
+    
 //    $tableName = 'statistics';
 //
 //    //Removing old values
@@ -22,6 +26,10 @@ function updateStatistics($db) {
 //    $sql = "SELECT director FROM movies";
 //    $movies = $db->fetchAll($sql);
 //    $db->insert($tableName, array('name' => 'mostViewedDirectors', 'value' => getHighest('director', $movies)));
+    
+      //Favorite Actors
+      $db->insert($tableName, array('name' => 'favoriteActors', 'value' => implode(',', $FAVORITE_ACTORS)));
+      $db->insert($tableName, array('name' => 'favoriteActresses', 'value' => implode(',', $FAVORITE_ACTRESSES)));
     
     global $IMAGE_STATISTICS;
     foreach ($IMAGE_STATISTICS as $statistic) {
@@ -76,10 +84,18 @@ function getStatistic($key) {
     global $db;
     $sql = "SELECT * FROM statistics where name='".$key."'";
     $statistic = $db->fetchAll($sql);
+    $result = array();
     
     $entities = split(',', $statistic[0]['value']);
+    
+    foreach ($entities as $entity) {
+        $result[] = array(
+            'name' => $entity,
+            'image' => getImage($entity)
+        );
+    }
          
-    return $entities;
+    return $result;
 }
 
 function getPoster($url) {
