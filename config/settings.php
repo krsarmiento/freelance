@@ -36,7 +36,7 @@ $IMDB_MOVIE_URL = 'http://www.imdb.com/title/';
 $IMDB_NAME_URL = 'http://www.imdb.com/name/';
 $IMDB_FIND_URL = 'http://www.imdb.com/xml/find?json=1&nr=1&nm=on&q=';
 
-$IMAGE_STATISTICS = array('mostViewedActors', 'mostViewedDirectors', 'favoriteActors', 'favoriteDirectors');
+$IMAGE_STATISTICS = array('mostViewedActors', 'mostViewedDirectors', 'favoriteActors', 'favoriteActresses');
 
 $FAVORITE_ACTORS = array('Jeremy Renner', 'Denzel Washington', 'Kevin Spacey', 'Clint Eastwood');
 $FAVORITE_ACTRESSES = array('Julie Delpy', 'Rooney Mara', 'Charlotte Gainsbourg', 'Uma Thurman');

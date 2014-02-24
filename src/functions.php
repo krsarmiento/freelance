@@ -7,36 +7,94 @@ function updateStatistics($db) {
     global $FAVORITE_ACTORS;
     global $FAVORITE_ACTRESSES;
     
-//    $tableName = 'statistics';
-//
-//    //Removing old values
-//    $db->executeUpdate('DELETE FROM ' . $tableName . ' WHERE 1');
-//
-//    //Total movies
-//    $sql = "SELECT count(*) FROM movies";
-//    $result = $db->fetchAssoc($sql, array((int) 1));
-//    $db->insert($tableName, array('name' => 'allMovies', 'value' => (int) $result['count(*)']));
-//
-//    //Most viewed actors
-//    $sql = "SELECT actors FROM movies";
-//    $movies = $db->fetchAll($sql);
-//    $db->insert($tableName, array('name' => 'mostViewedActors', 'value' => getHighest('actors', $movies)));
-//
-//    //Most viewed directors
-//    $sql = "SELECT director FROM movies";
-//    $movies = $db->fetchAll($sql);
-//    $db->insert($tableName, array('name' => 'mostViewedDirectors', 'value' => getHighest('director', $movies)));
+    $tableName = 'statistics';
+
+    //Removing old values
+    $db->executeUpdate('DELETE FROM ' . $tableName . ' WHERE 1');
+
+    //Total movies
+    $sql = "SELECT count(*) FROM movies";
+    $result = $db->fetchAssoc($sql, array((int) 1));
+    $db->insert($tableName, array('name' => 'allMovies', 'value' => (int) $result['count(*)']));
+
+    //Most viewed actors
+    $sql = "SELECT actors FROM movies";
+    $movies = $db->fetchAll($sql);
+    $db->insert($tableName, array('name' => 'mostViewedActors', 'value' => getHighest('actors', $movies)));
+
+    //Most viewed directors
+    $sql = "SELECT director FROM movies";
+    $movies = $db->fetchAll($sql);
+    $db->insert($tableName, array('name' => 'mostViewedDirectors', 'value' => getHighest('director', $movies)));
     
-      //Favorite Actors
-      $db->insert($tableName, array('name' => 'favoriteActors', 'value' => implode(',', $FAVORITE_ACTORS)));
-      $db->insert($tableName, array('name' => 'favoriteActresses', 'value' => implode(',', $FAVORITE_ACTRESSES)));
-    
-    global $IMAGE_STATISTICS;
-    foreach ($IMAGE_STATISTICS as $statistic) {
-        updateStatisticImages($statistic);
-    }
+    //Favorite Actors
+    $db->insert($tableName, array('name' => 'favoriteActors', 'value' => implode(',', $FAVORITE_ACTORS)));
+    $db->insert($tableName, array('name' => 'favoriteActresses', 'value' => implode(',', $FAVORITE_ACTRESSES)));
     
 }
+
+
+function updateStatisticImages($name) {
+    global $IMDB_FIND_URL;
+    global $IMDB_NAME_URL;
+    global $IMAGE_STATISTICS;
+    
+    foreach ($IMAGE_STATISTICS as $name) {
+        
+        foreach (getStatistic($name) as $entity) {
+            
+            if (!$entity['image']) {
+                
+                $url = $IMDB_FIND_URL . urlencode($entity['name']);
+                $response = file_get_contents($url);
+                $data = json_decode($response);
+
+                if (property_exists($data, name_popular))
+                    $name = $data->name_popular;
+                else
+                    $name = $data->name_approx;
+                
+                var_dump($data);
+
+                $dom = HtmlDomParser::file_get_html( $IMDB_NAME_URL . $name[0]->id );
+                $image = $dom->find('img[id=name-poster]', 0);
+                var_dump($image->attr['src']);
+                saveImage($name[0]->name, $image->attr['src']);
+                
+            }
+        }
+    }
+}
+
+
+function getStatistic($key) {
+    global $db;
+    $sql = "SELECT * FROM statistics where name='".$key."'";
+    $statistic = $db->fetchAll($sql);
+    $result = array();
+    $entities = split(',', $statistic[0]['value']);
+    
+    foreach ($entities as $entity) {
+        $result[] = array(
+            'name' => $entity,
+            'image' => getImage($entity)
+        );
+    }
+         
+    return $result;
+}
+
+
+function getImage($name) {
+    global $db;
+    $sql = "SELECT * FROM images where name='".$name."'";
+    $image = $db->fetchAll($sql);
+    if ($image)
+        return $image[0]['value'];
+    else
+        return null;
+}
+
 
 function getHighest($name, $movies) {
     $elements = array();
@@ -80,24 +138,6 @@ function getMovies($rating, $times, $limit) {
     return $movies;
 }
 
-function getStatistic($key) {
-    global $db;
-    $sql = "SELECT * FROM statistics where name='".$key."'";
-    $statistic = $db->fetchAll($sql);
-    $result = array();
-    
-    $entities = split(',', $statistic[0]['value']);
-    
-    foreach ($entities as $entity) {
-        $result[] = array(
-            'name' => $entity,
-            'image' => getImage($entity)
-        );
-    }
-         
-    return $result;
-}
-
 function getPoster($url) {
     return file_get_contents($url);
 }
@@ -108,16 +148,6 @@ function convertImage($url){
     return $base64;
 }
 
-function getImage($name) {
-    global $db;
-    $sql = "SELECT * FROM images where name='".$name."'";
-    $image = $db->fetchAll($sql);
-    if ($image)
-        return $image[0]['value'];
-    else
-        return null;
-}
-
 function saveImage($name, $imageUrl) {
     global $db;
     $base64 = convertImage($imageUrl);
@@ -125,28 +155,6 @@ function saveImage($name, $imageUrl) {
     $db -> insert('images', $data);
 }
 
-
-function updateStatisticImages($name) {
-    global $IMDB_FIND_URL;
-    global $IMDB_NAME_URL;
-    
-    foreach (getStatistic($name) as $entity) {
-        if (!getImage($entity)) {
-            $url = $IMDB_FIND_URL . urlencode($entity);
-            $response = file_get_contents($url);
-            $data = json_decode($response);
-            
-            if (property_exists($data, name_popular))
-                $name = $data->name_popular;
-            else
-                $name = $data->name_approx;
-
-            $dom = HtmlDomParser::file_get_html( $IMDB_NAME_URL . $name[0]->id );
-            $image = $dom->find('img[id=name-poster]', 0);
-            saveImage($name[0]->name, $image->attr['src']);
-        }
-    }
-}
 
 
 
