@@ -10,8 +10,8 @@ $app -> get('/', function() use ($twig) {
 	return $twig -> render('web/index.html.twig', array());
 });
 
-$app -> get('/software', function() use ($twig) {
-	return $twig -> render('web/software.html.twig', array());
+$app -> get('/software', function() use ($twig, $ACHIEVEMENTS) {
+	return $twig -> render('web/software.html.twig', array('achievements' => $ACHIEVEMENTS));
 });
 
 $app -> get('/load/poster/{id}', function($id) use ($twig) {
