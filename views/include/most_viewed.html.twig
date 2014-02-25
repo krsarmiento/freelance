@@ -14,7 +14,7 @@
                       <div class="row">
                         {% for entity in category.entities %}
                             <div class="col-xs-6 col-md-3">
-                                <a href="javascript:void(0)" class="thumbnail">
+                                <a href="javascript:void(0)" class="thumbnail" data-toggle="tooltip" data-title="{{entity.name}}" data-placement="bottom">
                                     <img src="{{entity.image}}" style="height: 180px; width: 90%; display: block;">
                                 </a>
                             </div>
