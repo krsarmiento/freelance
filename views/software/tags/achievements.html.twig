@@ -1,0 +1,14 @@
+{% for achievement in achievements %}
+    <div class="media">
+        <a class="pull-left" href="{{ achievement.license }}" target="_blank" style="cursor: default">
+          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="{{ achievement.image }}" style="width: 48px; height: 48px;">
+        </a>
+        <div class="media-body">
+            <a href="{{ achievement.url }}" target="_blank">
+                <h4 class="media-heading">{{ achievement.title }}</h4>
+            </a>
+          
+            {{ achievement.description }}
+        </div>
+    </div>
+{% endfor %}

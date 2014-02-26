@@ -6,17 +6,12 @@ use Sunra\PhpSimple\HtmlDomParser;
 
 require_once __DIR__ . '/functions.php';
 
+
+
+################## REGULAR CONTROLLERS ##################
+
 $app -> get('/', function() use ($twig) {
 	return $twig -> render('web/index.html.twig', array());
-});
-
-$app -> get('/software', function() use ($twig, $ACHIEVEMENTS) {
-	return $twig -> render('web/software.html.twig', array('achievements' => $ACHIEVEMENTS));
-});
-
-$app -> get('/load/poster/{id}', function($id) use ($twig) {
-	$movie = getMovie($id);
-	return new Response(getPoster($movie['poster']), 200, array('Content-type' => 'image/jpg'));
 });
 
 $app -> get('/movies', function() use ($db, $twig, $RATINGS_URL, $OMDB_URL, $SCORE_RANGES, $HIGHEST_SCORE, $MOVIE_LIMIT) {
@@ -44,15 +39,33 @@ $app -> get('/movies', function() use ($db, $twig, $RATINGS_URL, $OMDB_URL, $SCO
 
 	$data = array('ratingScores' => $ratingScores, 'favorites' => $favorites,'mostViewed' => $mostViewed);
 
-	return $twig -> render('smatcrufnui/index.html.twig', $data);
+	return $twig -> render('movies/index.html.twig', $data);
 });
+
+$app -> get('/software', function() use ($twig, $ACHIEVEMENTS) {
+	return $twig -> render('software/index.html.twig', array('achievements' => $ACHIEVEMENTS));
+});
+
+$app -> get('/social', function() use ($twig) {
+	return $twig -> render('social/index.html.twig', array());
+});
+
+
+
+################## AJAX & LOADER CONTROLLERS ##################
+
+$app -> get('/load/poster/{id}', function($id) use ($twig) {
+	$movie = getMovie($id);
+	return new Response(getPoster($movie['poster']), 200, array('Content-type' => 'image/jpg'));
+});
+
 
 $app -> get('/ajax/movies/load/{rating}/{times}', function($rating, $times) use ($db, $twig, $MOVIE_LIMIT) {
         $data = array(
             'movies' => getMovies($rating, $times, $MOVIE_LIMIT)
 	);
 
-	return $twig -> render('smatcrufnui/ajax_load_movies.html.twig', $data);
+	return $twig -> render('movies/tags/load_more.html.twig', $data);
 });
 
 
@@ -69,6 +82,8 @@ $app -> get('/ajax/movie/data/{id}', function($id) use ($twig, $IMDB_MOVIE_URL) 
 });
 
 
+
+################## UPDATE CONTROLLERS ##################
 
 $app -> get('/update/imdb/ratings', function() use ($db, $OMDB_URL, $RATINGS_URL, $HIGHEST_SCORE) {
 	$xml = simplexml_load_file($RATINGS_URL);
